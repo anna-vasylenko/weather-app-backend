@@ -71,6 +71,7 @@ export const refreshSessionController = async (req, res) => {
   const { refreshToken } = req.body;
 
   const session = await getSession(refreshToken);
+  const user = await getUser(session);
 
   const newSession = await refreshSession({
     sessionId: session._id,
@@ -84,6 +85,11 @@ export const refreshSessionController = async (req, res) => {
     message: 'Successfully refreshed a session!',
     data: {
       accessToken: session.accessToken,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
     },
   });
 };
