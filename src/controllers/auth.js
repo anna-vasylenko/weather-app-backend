@@ -1,4 +1,5 @@
 import {
+  getSession,
   getUser,
   loginUser,
   logoutUser,
@@ -67,14 +68,16 @@ export const loginUserController = async (req, res) => {
 };
 
 export const refreshSessionController = async (req, res) => {
-  const { refreshToken, sessionId } = req.body;
+  const { refreshToken } = req.body;
 
-  const session = await refreshSession({
-    sessionId,
+  const session = await getSession(refreshToken);
+
+  const newSession = await refreshSession({
+    sessionId: session._id,
     refreshToken,
   });
 
-  setupSession(res, session);
+  setupSession(res, newSession);
 
   res.status(200).json({
     status: 200,
