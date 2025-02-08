@@ -56,6 +56,7 @@ export const loginUserController = async (req, res) => {
     message: 'Seccessfuly logged in an user',
     data: {
       accessToken: session.accessToken,
+      refreshToken: session.refreshToken,
       user: {
         id: user._id,
         email: user.email,
@@ -66,9 +67,11 @@ export const loginUserController = async (req, res) => {
 };
 
 export const refreshSessionController = async (req, res) => {
+  const { refreshToken, sessionId } = req.body;
+
   const session = await refreshSession({
-    sessionId: req.cookies.sessionId,
-    refreshToken: req.cookies.refreshToken,
+    sessionId,
+    refreshToken,
   });
 
   setupSession(res, session);
