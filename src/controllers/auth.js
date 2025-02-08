@@ -1,4 +1,5 @@
 import {
+  getUser,
   loginUser,
   logoutUser,
   refreshSession,
@@ -19,11 +20,27 @@ const setupSession = (res, session) => {
 };
 
 export const registerUserController = async (req, res) => {
-  await registerUser(req.body);
+  const user = await registerUser(req.body);
+  console.log(user);
+
+  const session = await loginUser({
+    email: user.email,
+    password: req.body.password,
+  });
+
+  setupSession(res, session);
 
   res.status(201).json({
     status: 201,
-    message: 'Successfuly registered a user!',
+    message: 'Successfully registered and logged in!',
+    data: {
+      accessToken: session.accessToken,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
+    },
   });
 };
 
@@ -32,12 +49,18 @@ export const loginUserController = async (req, res) => {
 
   setupSession(res, session);
 
+  const user = await getUser(session);
+
   res.status(200).json({
     status: 200,
     message: 'Seccessfuly logged in an user',
     data: {
       accessToken: session.accessToken,
-      userId: session.userId,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
     },
   });
 };
