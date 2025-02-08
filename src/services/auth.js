@@ -85,6 +85,6 @@ export const getUser = async (session) => {
   return await UsersCollection.findById(session.userId);
 };
 
-export const getSession = async (accessToken) => {
-  return await SessionsCollection.findOne({ accessToken });
+export const getSession = async (refreshToken) => {
+  return await SessionsCollection.findOne({ refreshToken });
 };
