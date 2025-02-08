@@ -86,5 +86,5 @@ export const getUser = async (session) => {
 };
 
 export const getSession = async (accessToken) => {
-  return await SessionsCollection.findOne(accessToken);
+  return await SessionsCollection.findOne({ accessToken });
 };
