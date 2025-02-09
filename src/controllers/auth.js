@@ -1,11 +1,4 @@
-import {
-  getSession,
-  getUser,
-  loginUser,
-  logoutUser,
-  refreshSession,
-  registerUser,
-} from '../services/auth.js';
+import * as authServices from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/auth.js';
 
 const setupSession = (res, session) => {
@@ -21,10 +14,10 @@ const setupSession = (res, session) => {
 };
 
 export const registerUserController = async (req, res) => {
-  const user = await registerUser(req.body);
+  const user = await authServices.registerUser(req.body);
   console.log(user);
 
-  const session = await loginUser({
+  const session = await authServices.loginUser({
     email: user.email,
     password: req.body.password,
   });
@@ -46,11 +39,11 @@ export const registerUserController = async (req, res) => {
 };
 
 export const loginUserController = async (req, res) => {
-  const session = await loginUser(req.body);
+  const session = await authServices.loginUser(req.body);
 
   setupSession(res, session);
 
-  const user = await getUser(session);
+  const user = await authServices.getUser(session);
 
   res.status(200).json({
     status: 200,
@@ -70,10 +63,10 @@ export const loginUserController = async (req, res) => {
 export const refreshSessionController = async (req, res) => {
   const { refreshToken } = req.body;
 
-  const session = await getSession(refreshToken);
-  const user = await getUser(session);
+  const session = await authServices.getSession(refreshToken);
+  const user = await authServices.getUser(session);
 
-  const newSession = await refreshSession({
+  const newSession = await authServices.refreshSession({
     sessionId: session._id,
     refreshToken,
   });
@@ -96,7 +89,7 @@ export const refreshSessionController = async (req, res) => {
 
 export const logoutUserController = async (req, res) => {
   if (req.cookies.sessionId) {
-    await logoutUser(req.cookies.sessionId);
+    await authServices.logoutUser(req.cookies.sessionId);
   }
 
   res.clearCookie('sessionId');

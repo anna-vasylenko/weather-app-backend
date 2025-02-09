@@ -6,6 +6,7 @@ import { env } from './utils/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import authRouter from './routers/auth.js';
+import locationsRouter from './routers/locations.js';
 
 const PORT = Number(env('PORT', '3000'));
 
@@ -17,6 +18,8 @@ export const setupServer = () => {
   app.use(cookieParser());
 
   app.use('/auth', authRouter);
+
+  app.use('/locations', locationsRouter);
 
   app.use(notFoundHandler);
 
