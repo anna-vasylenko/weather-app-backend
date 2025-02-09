@@ -21,4 +21,4 @@ const locationsSchema = new Schema(
   },
 );
 
-export const LocationsCollection = model('cities', locationsSchema);
+export const LocationsCollection = model('location', locationsSchema);
