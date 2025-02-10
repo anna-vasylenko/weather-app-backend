@@ -5,3 +5,9 @@ export const getLocations = async () => {
 
   return locations;
 };
+
+export const getLocation = async (id) => {
+  const location = await LocationsCollection.findById(id);
+
+  return location;
+};

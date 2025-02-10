@@ -88,3 +88,22 @@ export const getUser = async (session) => {
 export const getSession = async (refreshToken) => {
   return await SessionsCollection.findOne({ refreshToken });
 };
+
+export const updateUser = async (filter, payload, options = {}) => {
+  const currentUser = await UsersCollection.findOne(filter);
+  if (!currentUser) throw createHttpError(404, 'Not found user');
+
+  if (payload.password) {
+    const encryptedPassword = await bcrypt.hash(payload.password, 10);
+    payload.password = encryptedPassword;
+  }
+
+  const updatedUser = await UsersCollection.findOneAndUpdate(filter, payload, {
+    ...options,
+    new: true,
+  });
+
+  if (!updatedUser) return null;
+
+  return updatedUser;
+};

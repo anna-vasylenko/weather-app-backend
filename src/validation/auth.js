@@ -17,4 +17,5 @@ export const updateUserSchema = Joi.object({
   name: Joi.string().min(2).max(32).optional(),
   email: Joi.string().pattern(emailRegexp).optional(),
   password: Joi.string().min(8).max(64).optional(),
+  locationId: Joi.string().optional(),
 });

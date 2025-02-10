@@ -1,5 +1,6 @@
 import * as authServices from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/auth.js';
+import createHttpError from 'http-errors';
 
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
@@ -29,6 +30,7 @@ export const registerUserController = async (req, res) => {
     message: 'Successfully registered and logged in!',
     data: {
       accessToken: session.accessToken,
+      refreshToken: session.refreshToken,
       user: {
         id: user._id,
         email: user.email,
@@ -97,4 +99,21 @@ export const logoutUserController = async (req, res) => {
   res.clearCookie('refreshToken');
 
   res.status(204).send();
+};
+
+export const updateUserController = async (req, res) => {
+  const { _id } = req.user;
+
+  const updateData = { ...req.body };
+  const result = await authServices.updateUser({ _id }, updateData);
+
+  if (!result) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  res.status(200).json({
+    status: 200,
+    message: 'Successfully updated user profile!',
+    data: result,
+  });
 };

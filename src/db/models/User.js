@@ -18,8 +18,10 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
-    avatar: {
-      type: String,
+    locationId: {
+      type: Schema.Types.ObjectId,
+      ref: 'locations',
+      default: null,
     },
   },
   {
