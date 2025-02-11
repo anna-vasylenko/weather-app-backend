@@ -107,3 +107,11 @@ export const updateUser = async (filter, payload, options = {}) => {
 
   return updatedUser;
 };
+
+export const updateUserLocation = async (userId, locationId) => {
+  return await UsersCollection.findByIdAndUpdate(
+    userId,
+    { locationId },
+    { new: true },
+  );
+};
