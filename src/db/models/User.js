@@ -18,9 +18,9 @@ const usersSchema = new Schema(
       type: String,
       required: true,
     },
-    locationId: {
+    location: {
       type: Schema.Types.ObjectId,
-      ref: 'locations',
+      ref: 'location',
       default: null,
     },
   },

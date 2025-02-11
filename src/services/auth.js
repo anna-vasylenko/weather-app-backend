@@ -82,7 +82,9 @@ export const logoutUser = async (sessionId) => {
 };
 
 export const getUser = async (session) => {
-  return await UsersCollection.findById(session.userId);
+  return await UsersCollection.findById(session.userId).populate({
+    path: 'location',
+  });
 };
 
 export const getSession = async (refreshToken) => {
@@ -108,10 +110,10 @@ export const updateUser = async (filter, payload, options = {}) => {
   return updatedUser;
 };
 
-export const updateUserLocation = async (userId, locationId) => {
+export const updateUserLocation = async (userId, location) => {
   return await UsersCollection.findByIdAndUpdate(
     userId,
-    { locationId },
+    { location },
     { new: true },
   );
 };

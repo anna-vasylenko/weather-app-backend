@@ -16,7 +16,6 @@ const setupSession = (res, session) => {
 
 export const registerUserController = async (req, res) => {
   const user = await authServices.registerUser(req.body);
-  console.log(user);
 
   const session = await authServices.loginUser({
     email: user.email,
@@ -57,6 +56,7 @@ export const loginUserController = async (req, res) => {
         id: user._id,
         email: user.email,
         name: user.name,
+        location: user.location,
       },
     },
   });
@@ -85,6 +85,7 @@ export const refreshSessionController = async (req, res) => {
         id: user._id,
         email: user.email,
         name: user.name,
+        location: user.location,
       },
     },
   });
