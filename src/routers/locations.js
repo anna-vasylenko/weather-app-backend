@@ -12,7 +12,11 @@ locationsRouter.get(
   '/',
   ctrlWrapper(locationController.getLocationsController),
 );
-
+locationsRouter.get(
+  '/:id/info',
+  isValidId,
+  ctrlWrapper(locationController.getLocationInfoController),
+);
 locationsRouter.get(
   '/:id',
   isValidId,
